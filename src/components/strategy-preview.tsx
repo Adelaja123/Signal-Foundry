@@ -15,7 +15,7 @@ interface StrategyPreviewProps {
 }
 
 /**
- * Preview component that displays the generated strategy
+ * Premium strategy preview panel with dark theme
  */
 export function StrategyPreview({ strategy, isLoading }: StrategyPreviewProps) {
   const statLine = useMemo(
@@ -30,42 +30,53 @@ export function StrategyPreview({ strategy, isLoading }: StrategyPreviewProps) {
 
   return (
     <aside
-      className="rounded-[1.8rem] border border-line bg-[linear-gradient(180deg,rgba(255,252,246,0.92),rgba(247,241,230,0.92))] p-5 shadow-[0_16px_40px_rgba(20,38,29,0.06)]"
+      className="relative overflow-hidden rounded-2xl border border-border bg-card"
       aria-label="Strategy preview"
       aria-busy={isLoading}
     >
-      {/* Header */}
-      <header className="flex items-center justify-between border-b border-line pb-4">
-        <div>
-          <p className="text-sm uppercase tracking-[0.22em] text-foreground/45">
-            Current concept
-          </p>
-          <h2 className="mt-2 font-display text-3xl text-foreground text-balance">
-            {strategy.name}
-          </h2>
-          <p className="mt-1 text-sm text-foreground/60">{statLine}</p>
+      {/* Loading overlay */}
+      {isLoading && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-card/80 backdrop-blur-sm">
+          <div className="flex flex-col items-center gap-3">
+            <div className="h-8 w-8 animate-spin rounded-full border-2 border-accent border-t-transparent" />
+            <p className="text-sm text-muted">Generating strategy...</p>
+          </div>
         </div>
-        <Badge variant="accent">live preview</Badge>
+      )}
+
+      {/* Header */}
+      <header className="border-b border-border p-5">
+        <div className="flex items-start justify-between gap-4">
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2">
+              <Badge variant="accent">Preview</Badge>
+              <span className="text-xs text-muted-foreground">{statLine}</span>
+            </div>
+            <h2 className="mt-2 truncate text-xl font-semibold text-foreground">
+              {strategy.name}
+            </h2>
+          </div>
+        </div>
       </header>
 
       {/* Content */}
-      <div className="mt-5 space-y-5">
+      <div className="max-h-[calc(100vh-280px)] space-y-4 overflow-y-auto p-5">
         {/* Tagline Section */}
-        <section className="rounded-[1.5rem] bg-forest px-5 py-5 text-[#f8f2e8]">
-          <p className="text-xs uppercase tracking-[0.2em] text-[#f5d8bf]">
+        <section className="rounded-xl bg-gradient-to-br from-accent/10 to-accent/5 p-5 ring-1 ring-accent/20">
+          <p className="text-xs font-medium uppercase tracking-wider text-accent">
             Tagline
           </p>
-          <p className="mt-3 font-display text-2xl leading-tight text-balance">
+          <p className="mt-2 text-lg font-medium leading-snug text-foreground text-balance">
             {strategy.tagline}
           </p>
-          <p className="mt-3 text-sm leading-6 text-[#f1e4d4]">
+          <p className="mt-3 text-sm leading-relaxed text-muted">
             {strategy.summary}
           </p>
         </section>
 
         {/* Audience & Differentiators */}
-        <div className="grid gap-4 md:grid-cols-2">
-          <InfoCard title="Audience">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <InfoCard title="Target Audience">
             {strategy.audiences.map((audience, index) => (
               <ListRow key={`audience-${index}`} value={audience} />
             ))}
@@ -78,8 +89,8 @@ export function StrategyPreview({ strategy, isLoading }: StrategyPreviewProps) {
         </div>
 
         {/* Features */}
-        <InfoCard title="Feature pillars">
-          <div className="grid gap-3">
+        <InfoCard title="Core Features">
+          <div className="grid gap-2">
             {strategy.features.map((feature, index) => (
               <FeatureCard key={`feature-${index}`} feature={feature} />
             ))}
@@ -87,13 +98,13 @@ export function StrategyPreview({ strategy, isLoading }: StrategyPreviewProps) {
         </InfoCard>
 
         {/* Launch Plan & Metrics */}
-        <div className="grid gap-4 md:grid-cols-[1.05fr_0.95fr]">
-          <InfoCard title="Launch plan">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <InfoCard title="Launch Plan">
             {strategy.launchPlan.map((step, index) => (
-              <LaunchStepCard key={`step-${index}`} step={step} />
+              <LaunchStepCard key={`step-${index}`} step={step} index={index} />
             ))}
           </InfoCard>
-          <InfoCard title="Signals to watch">
+          <InfoCard title="Success Metrics">
             {strategy.metrics.map((metric, index) => (
               <ListRow key={`metric-${index}`} value={metric} />
             ))}
@@ -101,7 +112,7 @@ export function StrategyPreview({ strategy, isLoading }: StrategyPreviewProps) {
         </div>
 
         {/* First-run Journey */}
-        <InfoCard title="First-run journey">
+        <InfoCard title="Onboarding Flow">
           {strategy.firstRunMoments.map((moment, index) => (
             <ListRow key={`moment-${index}`} value={moment} />
           ))}

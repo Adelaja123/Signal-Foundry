@@ -6,17 +6,18 @@ interface ListRowProps {
 }
 
 /**
- * Row component for list items within InfoCard
+ * Premium list row with subtle styling
  */
 export function ListRow({ value, className }: ListRowProps) {
   return (
     <div
       className={cn(
-        "rounded-[1.15rem] border border-line bg-white/78 px-4 py-3 text-sm leading-6 text-foreground/75",
+        "flex items-center gap-3 rounded-lg bg-card-elevated/50 px-3 py-2.5 text-sm text-muted",
         className
       )}
     >
-      {value}
+      <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-accent" aria-hidden="true" />
+      <span>{value}</span>
     </div>
   );
 }

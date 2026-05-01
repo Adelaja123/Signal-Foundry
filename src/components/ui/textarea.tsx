@@ -1,22 +1,27 @@
-import { forwardRef } from "react";
+import { forwardRef, useId } from "react";
 import { cn } from "@/lib/utils";
 
-interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+interface TextareaProps
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   error?: string;
 }
 
 /**
- * Textarea component with optional label and error state
+ * Premium textarea component with dark theme styling
  */
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, label, error, id, ...props }, ref) => {
-    const textareaId = id || `textarea-${Math.random().toString(36).slice(2, 9)}`;
+    const generatedId = useId();
+    const textareaId = id || generatedId;
 
     return (
-      <div className="space-y-3">
+      <div className="space-y-2">
         {label && (
-          <label htmlFor={textareaId} className="block text-sm font-medium text-foreground/80">
+          <label
+            htmlFor={textareaId}
+            className="block text-sm font-medium text-foreground"
+          >
             {label}
           </label>
         )}
@@ -24,10 +29,10 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           ref={ref}
           id={textareaId}
           className={cn(
-            "w-full rounded-[1.6rem] border border-line bg-white/80 px-5 py-4 text-base leading-7 text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] outline-none placeholder:text-foreground/35",
-            "focus:border-accent focus:bg-white focus:ring-4 focus:ring-accent/10",
-            "transition-colors duration-200",
-            error && "border-[#d58d76] focus:border-[#d58d76] focus:ring-[#d58d76]/10",
+            "w-full rounded-xl border border-border bg-card px-4 py-3 text-base leading-relaxed text-foreground placeholder:text-muted-foreground",
+            "focus:border-accent focus:bg-card-elevated focus:outline-none focus:ring-2 focus:ring-accent/20",
+            "transition-colors duration-200 resize-none",
+            error && "border-error focus:border-error focus:ring-error/20",
             className
           )}
           aria-invalid={error ? "true" : undefined}
@@ -35,7 +40,11 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           {...props}
         />
         {error && (
-          <p id={`${textareaId}-error`} className="text-sm text-[#8f3f1f]" role="alert">
+          <p
+            id={`${textareaId}-error`}
+            className="text-sm text-error"
+            role="alert"
+          >
             {error}
           </p>
         )}

@@ -1,29 +1,37 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f4efe4;
-  --foreground: #14261d;
-  --panel: rgba(255, 251, 244, 0.9);
-  --panel-strong: #fffaf2;
-  --line: rgba(20, 38, 29, 0.12);
-  --accent: #cf5f2a;
-  --accent-soft: #f2c59b;
-  --forest: #1f4d3b;
-  --forest-soft: #dbe7dd;
+  --background: #0a0a0b;
+  --foreground: #fafafa;
+  --muted: #a1a1aa;
+  --muted-foreground: #71717a;
+  --card: #18181b;
+  --card-elevated: #1f1f23;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.15);
+  --accent: #8b5cf6;
+  --accent-foreground: #ffffff;
+  --success: #22c55e;
+  --error: #ef4444;
+  --glow: rgba(139, 92, 246, 0.15);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-panel: var(--panel);
-  --color-panel-strong: var(--panel-strong);
-  --color-line: var(--line);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-card-elevated: var(--card-elevated);
+  --color-border: var(--border);
+  --color-border-hover: var(--border-hover);
   --color-accent: var(--accent);
-  --color-accent-soft: var(--accent-soft);
-  --color-forest: var(--forest);
-  --color-forest-soft: var(--forest-soft);
-  --font-sans: var(--font-space-grotesk);
-  --font-display: var(--font-fraunces);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-success: var(--success);
+  --color-error: var(--error);
+  --color-glow: var(--glow);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-geist-mono);
 }
 
 * {
@@ -37,27 +45,62 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-space-grotesk), sans-serif;
-  background-image:
-    radial-gradient(circle at top left, rgba(207, 95, 42, 0.14), transparent 28%),
-    radial-gradient(circle at top right, rgba(31, 77, 59, 0.12), transparent 24%),
-    linear-gradient(180deg, #f7f1e7 0%, #f3eee4 45%, #efe8db 100%);
+  font-family: var(--font-inter), system-ui, sans-serif;
 }
 
 ::selection {
-  background: rgba(207, 95, 42, 0.2);
+  background: rgba(139, 92, 246, 0.3);
+  color: #ffffff;
 }
 
+/* Subtle noise texture overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.015;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  z-index: 9999;
+}
+
+/* Focus styles */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Smooth transitions */
 a,
 button,
-textarea {
+textarea,
+input {
   transition:
-    transform 160ms ease,
-    box-shadow 160ms ease,
-    background-color 160ms ease,
-    border-color 160ms ease,
-    color 160ms ease,
-    opacity 160ms ease;
+    transform 150ms ease,
+    box-shadow 150ms ease,
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease,
+    opacity 150ms ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -72,4 +115,53 @@ textarea {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px var(--glow);
+  }
+  50% {
+    box-shadow: 0 0 40px var(--glow), 0 0 60px var(--glow);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--card) 0%,
+    var(--card-elevated) 50%,
+    var(--card) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
 }

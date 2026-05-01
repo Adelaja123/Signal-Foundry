@@ -2,20 +2,28 @@ import { cn } from "@/lib/utils";
 
 interface BadgeProps {
   children: React.ReactNode;
-  variant?: "default" | "accent";
+  variant?: "default" | "accent" | "success";
   className?: string;
 }
 
 /**
- * Badge component for tags and labels
+ * Premium badge component for tags and status indicators
  */
-export function Badge({ children, variant = "default", className }: BadgeProps) {
+export function Badge({
+  children,
+  variant = "default",
+  className,
+}: BadgeProps) {
   return (
     <span
       className={cn(
-        "rounded-full px-3 py-1 text-sm",
-        variant === "default" && "border border-line bg-white/65 text-forest/75",
-        variant === "accent" && "bg-accent-soft text-[#7a3517] text-xs font-medium",
+        "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium",
+        variant === "default" &&
+          "border border-border bg-card text-muted",
+        variant === "accent" &&
+          "bg-accent/10 text-accent border border-accent/20",
+        variant === "success" &&
+          "bg-success/10 text-success border border-success/20",
         className
       )}
     >

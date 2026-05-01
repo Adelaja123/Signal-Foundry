@@ -9,29 +9,47 @@ interface ErrorProps {
 }
 
 /**
- * Error boundary component for handling runtime errors
+ * Error boundary with premium dark theme styling
  */
 export default function Error({ error, reset }: ErrorProps) {
   useEffect(() => {
-    // Log the error to an error reporting service
     console.error("[ErrorBoundary] Caught error:", error);
   }, [error]);
 
   return (
-    <main className="mx-auto flex min-h-[60vh] w-full max-w-2xl flex-col items-center justify-center px-5 py-12 text-center">
-      <div className="rounded-[2rem] border border-[#d58d76] bg-[#fff1eb] px-8 py-10 shadow-lg">
-        <h1 className="font-display text-3xl text-[#8f3f1f]">
+    <main className="flex min-h-screen flex-col items-center justify-center px-6">
+      <div className="mx-auto max-w-md text-center">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-error/10">
+          <svg
+            className="h-8 w-8 text-error"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg>
+        </div>
+
+        <h1 className="mt-6 text-2xl font-semibold text-foreground">
           Something went wrong
         </h1>
-        <p className="mt-4 text-[#8f3f1f]/80">
-          We encountered an unexpected error. Please try again or refresh the page.
+        <p className="mt-3 text-muted">
+          We encountered an unexpected error. Please try again.
         </p>
+
         {error.digest && (
-          <p className="mt-2 text-xs text-[#8f3f1f]/60">
+          <p className="mt-2 text-xs text-muted-foreground">
             Error ID: {error.digest}
           </p>
         )}
-        <div className="mt-6 flex justify-center gap-4">
+
+        <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
           <Button onClick={reset} variant="primary">
             Try again
           </Button>

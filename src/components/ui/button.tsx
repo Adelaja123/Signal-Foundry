@@ -2,27 +2,46 @@ import { forwardRef } from "react";
 import { cn } from "@/lib/utils";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "chip";
+  variant?: "primary" | "secondary" | "ghost" | "chip";
+  size?: "default" | "sm" | "lg";
   isLoading?: boolean;
 }
 
 /**
- * Button component with multiple variants
+ * Premium button component with multiple variants
  */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "primary", isLoading, children, disabled, ...props }, ref) => {
+  (
+    {
+      className,
+      variant = "primary",
+      size = "default",
+      isLoading,
+      children,
+      disabled,
+      ...props
+    },
+    ref
+  ) => {
     return (
       <button
         ref={ref}
         disabled={disabled || isLoading}
         className={cn(
-          "inline-flex items-center justify-center transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2",
+          "inline-flex items-center justify-center font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50",
+          // Variants
           variant === "primary" &&
-            "rounded-full bg-foreground px-6 py-3 text-sm font-medium text-[#fff7ef] shadow-[0_10px_30px_rgba(20,38,29,0.18)] hover:-translate-y-0.5 hover:bg-forest disabled:cursor-not-allowed disabled:opacity-70",
+            "rounded-full bg-foreground text-background shadow-lg shadow-white/5 hover:bg-foreground/90 hover:shadow-xl hover:shadow-white/10",
           variant === "secondary" &&
-            "rounded-full border border-line bg-white/70 px-4 py-2 text-sm text-foreground/75 hover:-translate-y-0.5 hover:border-accent/45 hover:bg-white",
+            "rounded-full border border-border bg-card text-foreground hover:border-border-hover hover:bg-card-elevated",
+          variant === "ghost" &&
+            "rounded-lg text-muted hover:bg-card hover:text-foreground",
           variant === "chip" &&
-            "rounded-full border border-line bg-white/70 px-4 py-2 text-sm text-foreground/75 hover:-translate-y-0.5 hover:border-accent/45 hover:bg-white text-left",
+            "rounded-full border border-border bg-card/50 text-muted hover:border-border-hover hover:bg-card hover:text-foreground",
+          // Sizes
+          size === "default" && "h-11 px-6 text-sm",
+          size === "sm" && "h-9 px-4 text-sm",
+          size === "lg" && "h-12 px-8 text-base",
           isLoading && "cursor-wait",
           className
         )}

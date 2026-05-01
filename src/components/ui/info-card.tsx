@@ -7,24 +7,26 @@ interface InfoCardProps {
 }
 
 /**
- * Card component for displaying grouped information
+ * Premium info card with dark theme styling
  */
 export function InfoCard({ title, children, className }: InfoCardProps) {
+  const headingId = `${title.toLowerCase().replace(/\s+/g, "-")}-heading`;
+
   return (
     <section
       className={cn(
-        "rounded-[1.5rem] border border-line bg-panel-strong p-4 shadow-[0_8px_24px_rgba(20,38,29,0.04)]",
+        "rounded-xl border border-border bg-card p-4",
         className
       )}
-      aria-labelledby={`${title.toLowerCase().replace(/\s+/g, "-")}-heading`}
+      aria-labelledby={headingId}
     >
       <h3
-        id={`${title.toLowerCase().replace(/\s+/g, "-")}-heading`}
-        className="mb-3 text-xs font-medium uppercase tracking-[0.18em] text-foreground/45"
+        id={headingId}
+        className="mb-3 text-xs font-medium uppercase tracking-widest text-muted-foreground"
       >
         {title}
       </h3>
-      <div className="space-y-3">{children}</div>
+      <div className="space-y-2">{children}</div>
     </section>
   );
 }
